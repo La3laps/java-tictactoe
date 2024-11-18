@@ -8,10 +8,7 @@ public class TicTacToe {
     private Player player;
     private final Scanner scan = new Scanner(System.in);
 
-    public void display() {
-        clearScreen();
-        initializeBoard();
-        setOwner(getMoveFromPlayer());
+    private void display() {
         printBoard();
     }
 
@@ -29,7 +26,7 @@ public class TicTacToe {
         int[] inputArray = { 0, 0 };
         while (true) {
             try {
-                System.out.println("Enter row number (Smaller than three): ");
+                System.out.println("\u001B[33mEnter row number (Smaller than three):\u001B[0m ");
                 int inputOne = Integer.parseInt(scan.nextLine());
                 if (inputOne < 3) {
                     inputArray[0] = inputOne;
@@ -38,13 +35,15 @@ public class TicTacToe {
             } catch (Exception e) {
                 clearScreen();
                 System.out.println("\u001B[31mPlease enter an integer number\u001B[0m\n");
+                display();
             }
         }
         while (true) {
             try {
 
-                System.out.println("Enter column number (Smaller than three): ");
+                System.out.println("\u001B[33mEnter column number (Smaller than three):\u001B[0m ");
                 int inputTwo = Integer.parseInt(scan.nextLine());
+                clearScreen();
                 if (inputTwo < 3) {
                     inputArray[1] = inputTwo;
                     break;
@@ -52,6 +51,7 @@ public class TicTacToe {
             } catch (Exception e) {
                 clearScreen();
                 System.out.println("\u001B[31mPlease enter an integer number\u001B[0m\n");
+                display();
             }
         }
         return inputArray;
@@ -75,16 +75,66 @@ public class TicTacToe {
         System.out.flush();
     }
 
-    public void setOwner(int[] inputArray) {
-        this.player = new Player();
+    private int setOwner(int[] inputArray, int turn) {
+        switch (turn % 2) {
+            case 0:
+                this.player = new Player();
+                player.setRepresentation(" X ");
+                break;
+            case 1:
+                this.player = new Player();
+                player.setRepresentation(" O ");
+                break;
+            default:
+                throw new AssertionError();
+        }
+
         int index = inputArray[0] * 3 + inputArray[1];
 
         if (cells.get(index).getRepresentation().equals(" X ") || cells.get(index).getRepresentation().equals(" O ")) {
             clearScreen();
             System.out.println("\u001B[31mDésolé mais cette case est occupée!\u001B[0m\n");
-            getMoveFromPlayer();
         } else {
             cells.set(index, player);
+            turn++;
         }
+
+        return turn;
+    }
+
+    public void play() {
+        int turn = 0;
+        // boolean isGameOver = false;
+        clearScreen();
+        initializeBoard();
+        display();
+        while (turn < 9) {
+            int[] move = getMoveFromPlayer();
+            turn = setOwner(move, turn);
+            display();
+        }
+        printGameOver();
+    }
+
+    private void printGameOver() {
+        clearScreen();
+        System.out.println("""
+                                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⠀⠀⠀⢀⣴⣿⡶⠀⣾⣿⣿⡿⠟⠛⠁
+                ⠀⠀⠀⠀⠀⠀⣀⣀⣄⣀⠀⠀⠀⠀⣶⣶⣦⠀⠀⠀⠀⣼⣿⣿⡇⠀⣠⣿⣿⣿⠇⣸⣿⣿⣧⣤⠀⠀⠀
+                ⠀⠀⢀⣴⣾⣿⡿⠿⠿⠿⠇⠀⠀⣸⣿⣿⣿⡆⠀⠀⢰⣿⣿⣿⣷⣼⣿⣿⣿⡿⢀⣿⣿⡿⠟⠛⠁⠀⠀
+                ⠀⣴⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⢠⣿⣿⣹⣿⣿⣿⣿⣿⣿⡏⢻⣿⣿⢿⣿⣿⠃⣼⣿⣯⣤⣴⣶⣿⡤⠀
+                ⣼⣿⠏⠀⣀⣠⣤⣶⣾⣷⠄⣰⣿⣿⡿⠿⠻⣿⣯⣸⣿⡿⠀⠀⠀⠁⣾⣿⡏⢠⣿⣿⠿⠛⠋⠉⠀⠀⠀
+                ⣿⣿⠲⢿⣿⣿⣿⣿⡿⠋⢰⣿⣿⠋⠀⠀⠀⢻⣿⣿⣿⠇⠀⠀⠀⠀⠙⠛⠀⠀⠉⠁⠀⠀⠀⠀⠀⠀⠀
+                ⠹⢿⣷⣶⣿⣿⠿⠋⠀⠀⠈⠙⠃⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠈⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣴⣶⣦⣤⡀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀⠀⠀⠀⠀⣠⡇⢰⣶⣶⣾⡿⠷⣿⣿⣿⡟⠛⣉⣿⣿⣿⠆
+                ⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⡎⣿⣿⣦⠀⠀⠀⢀⣤⣾⠟⢀⣿⣿⡟⣁⠀⠀⣸⣿⣿⣤⣾⣿⡿⠛⠁⠀
+                ⠀⠀⠀⠀⣠⣾⣿⡿⠛⠉⢿⣦⠘⣿⣿⡆⠀⢠⣾⣿⠋⠀⣼⣿⣿⣿⠿⠷⢠⣿⣿⣿⠿⢻⣿⣧⠀⠀⠀
+                ⠀⠀⠀⣴⣿⣿⠋⠀⠀⠀⢸⣿⣇⢹⣿⣷⣰⣿⣿⠃⠀⢠⣿⣿⢃⣀⣤⣤⣾⣿⡟⠀⠀⠀⢻⣿⣆⠀⠀
+                ⠀⠀⠀⣿⣿⡇⠀⠀⢀⣴⣿⣿⡟⠀⣿⣿⣿⣿⠃⠀⠀⣾⣿⣿⡿⠿⠛⢛⣿⡟⠀⠀⠀⠀⠀⠻⠿⠀⠀
+                ⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                                """);
     }
 }
