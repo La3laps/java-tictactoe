@@ -77,16 +77,15 @@ public class TicTacToe {
 
     private int setOwner(int[] inputArray, int turn) {
         switch (turn % 2) {
-            case 0:
+            case 0 -> {
                 this.player = new Player();
                 player.setRepresentation(" X ");
-                break;
-            case 1:
+            }
+            case 1 -> {
                 this.player = new Player();
                 player.setRepresentation(" O ");
-                break;
-            default:
-                throw new AssertionError();
+            }
+            default -> throw new AssertionError();
         }
 
         int index = inputArray[0] * 3 + inputArray[1];
@@ -104,16 +103,52 @@ public class TicTacToe {
 
     public void play() {
         int turn = 0;
-        // boolean isGameOver = false;
+        boolean gameOver = false;
         clearScreen();
         initializeBoard();
         display();
-        while (turn < 9) {
+        while (!gameOver) {
             int[] move = getMoveFromPlayer();
             turn = setOwner(move, turn);
             display();
+            gameOver = isOver(turn);
         }
         printGameOver();
+    }
+
+    private boolean isOver(int turn) {
+        boolean over = false;
+        if (turn > 8) {
+            over = true;
+        }
+
+        for (int i = 0; i < 3; i++) {
+            // Check rows
+            if (!getCell(i * 3).equals("   ") && getCell(i * 3).equals(getCell(i * 3 + 1))
+                    && getCell(i * 3).equals(getCell(i * 3 + 2))) {
+                return true;
+            }
+
+            // Check columns
+            if (!getCell(i).equals("   ") && getCell(i).equals(getCell(i + 3)) && getCell(i).equals(getCell(i + 6))) {
+                return true;
+            }
+        }
+
+        // Check diag
+        if (!getCell(0).equals("   ") && getCell(0).equals(getCell(4)) && getCell(0).equals(getCell(8))) {
+            return true;
+        }
+
+        if (!getCell(2).equals("   ") && getCell(2).equals(getCell(4)) && getCell(2).equals(getCell(6))) {
+            return true;
+        }
+
+        return over;
+    }
+
+    private String getCell(int i) {
+        return cells.get(i).getRepresentation();
     }
 
     private void printGameOver() {
@@ -136,5 +171,6 @@ public class TicTacToe {
                 ⠀⠀⠀⠹⣿⣿⣶⣾⣿⣿⣿⠟⠁⠀⠸⢿⣿⠇⠀⠀⠀⠛⠛⠁⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
                 ⠀⠀⠀⠀⠈⠙⠛⠛⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
                                 """);
+        System.out.println("\tTHE WINNER IS \u001B[35m" + player.toString() + "\n");
     }
 }
