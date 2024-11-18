@@ -1,5 +1,11 @@
 public class Cell {
+    private String representation="   ";
+
     public String getRepresentation(){
-        return "   ";
+        return representation;
+    }
+
+    public void setRepresentation(String representation){
+        this.representation = representation;
     }
 }
