@@ -9,6 +9,7 @@ public class Cell {
         this.representation = representation;
     }
 
+    @Override
     public String toString() {
         return "Cell";
     }
