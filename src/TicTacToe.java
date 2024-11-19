@@ -7,15 +7,23 @@ public class TicTacToe {
     private final ArrayList<Cell> cells = new ArrayList<>();
     private Player player;
     private ArtificialPlayer machinePlayer;
-    // private final View display = new View();
-    // private final UserInteraction interact = new UserInteraction();
 
+    /**
+     * Sets 9 cells of free space => (" ").
+     */
     private void initializeBoard() {
         for (int i = 0; i < (size * size); i++) {
             cells.add(new Cell());
         }
     }
 
+    /**
+     * Sets a player move if possible but also depending on which turn we are.
+     * 
+     * @param inputArray takes in the actuall cell in the TicTacToe.
+     * @param turn       takes in which turn we are
+     * @return increments the turn once the function has been used.
+     */
     private int setPlayerMove(int[] inputArray, int turn) {
         View display = new View();
         UserInteraction interact = new UserInteraction();
@@ -42,12 +50,18 @@ public class TicTacToe {
             index = inputArray[0] * size + inputArray[1];
         }
         cells.set(index, player);
-        turn++;
 
-        return turn;
+        return turn++;
     }
 
-    public int setMachineMove(int[] inputArray, int turn) {
+    /**
+     * Sets a machine move if possible but also depending on which turn we are.
+     * 
+     * @param inputArray takes in the actuall cell in the TicTacToe.
+     * @param turn       takes in which turn we are
+     * @return increments the turn once the function has been used.
+     */
+    private int setMachineMove(int[] inputArray, int turn) {
         switch (turn % 2) {
             case 0 -> {
                 this.machinePlayer = new ArtificialPlayer();
@@ -68,11 +82,18 @@ public class TicTacToe {
             index = inputArray[0] * size + inputArray[1];
         }
         cells.set(index, machinePlayer);
-        turn++;
 
-        return turn;
+        return turn++;
     }
 
+    /**
+     * Main logic of the game.
+     * 1. Takes user input to know how many computers/players are playing and what
+     * they play.
+     * 2. Increments a turn variable depending on when player/computer plays.
+     * 3. Stops the game when a player/computer has won or there are no more
+     * possible moves.
+     */
     public void play() {
         View display = new View();
         UserInteraction interact = new UserInteraction();
@@ -166,6 +187,12 @@ public class TicTacToe {
 
     }
 
+    /**
+     * Checks if a player/computer has won the game.
+     * 
+     * @param turn takes in parameter which turn we are.
+     * @return true if conditions are met or false if the game should not be over.
+     */
     private boolean isOver(int turn) {
         boolean over = false;
         if (turn > 8) {

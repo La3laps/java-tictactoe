@@ -2,6 +2,8 @@
 
 Made at Le Campus Numérique.
 
+- `TicTacToe Game` : Jeu de morpion créé en java. Permet de jouer contre un joueur, un ordinateur, voire de laisser deux ordinateurs joeur entre eux.
+
 ## Folder Structure
 
 The workspace contains two folders by default, where:
