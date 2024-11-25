@@ -150,36 +150,39 @@ public class TicTacToe {
             display.displayBoard(cells, size);
             machinePlayer = new ArtificialPlayer();
             while (true) {
-
-                // machine turn
-                int[] machineMove = machinePlayer.getMachineMove();
-                turn = setMachineMove(machineMove, turn);
-                gameOver = isOver(turn);
-                display.clearScreen();
-                display.displayBoard(cells, size);
-                if (gameOver) {
-                    display.printGameOver();
-                    if (turn != 9) {
-                        display.printComputerWin();
-                    } else {
-                        display.printOutOfMoves();
+                try {
+                    // machine turn
+                    int[] machineMove = machinePlayer.getMachineMove();
+                    turn = setMachineMove(machineMove, turn);
+                    gameOver = isOver(turn);
+                    display.clearScreen();
+                    display.displayBoard(cells, size);
+                    if (gameOver) {
+                        display.printGameOver();
+                        if (turn != 9) {
+                            display.printComputerWin();
+                        } else {
+                            display.printOutOfMoves();
+                        }
+                        return;
                     }
-                    return;
-                }
 
-                // player turn
-                int[] move = interact.getMoveFromPlayer(cells, size);
-                turn = setPlayerMove(move, turn);
-                display.displayBoard(cells, size);
-                gameOver = isOver(turn);
-                if (gameOver) {
-                    display.printGameOver();
-                    if (turn != 9) {
-                        display.printPlayerWin();
-                    } else {
-                        display.printOutOfMoves();
+                    // player turn
+                    int[] move = interact.getMoveFromPlayer(cells, size);
+                    turn = setPlayerMove(move, turn);
+                    display.displayBoard(cells, size);
+                    gameOver = isOver(turn);
+                    if (gameOver) {
+                        display.printGameOver();
+                        if (turn != 9) {
+                            display.printPlayerWin();
+                        } else {
+                            display.printOutOfMoves();
+                        }
+                        return;
                     }
-                    return;
+                } catch (Exception e) {
+
                 }
             }
 
