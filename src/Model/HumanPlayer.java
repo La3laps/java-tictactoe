@@ -1,4 +1,5 @@
-public class Player extends Cell {
+package Model;
+public class HumanPlayer extends Player {
     private String representation = "   ";
 
     @Override
@@ -18,9 +19,9 @@ public class Player extends Cell {
      */
     public String getWinner() {
         String player = "";
-        if (representation.equals(" X ")) {
+        if (representation.equals(" ❌ ")) {
             player = "Player One";
-        } else if (representation.equals(" O ")) {
+        } else if (representation.equals(" ⭕ ")) {
             player = "Player Two";
         }
         return player;

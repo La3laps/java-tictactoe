@@ -1,3 +1,8 @@
+package View;
+
+import Model.ArtificialPlayer;
+import Model.HumanPlayer;
+import Model.Player;
 import java.util.ArrayList;
 
 public class View {
@@ -16,10 +21,10 @@ public class View {
      * @param cells ArrayList to be printed.
      * @param size  size of the array.
      */
-    public void displayBoard(ArrayList<Cell> cells, int size) {
+    public void displayBoard(ArrayList<Player> cells, int size) {
         printHorizontalLine();
         int i = 1;
-        for (Cell cell : cells) {
+        for (Player cell : cells) {
             if (i % size == 1) {
                 System.out.print("\t");
             }
@@ -40,29 +45,33 @@ public class View {
      */
     public void printAskForHumanOrComputer(int num) {
         switch (num) {
-            case 1 -> System.out.println("Is Player One Human(1) or Computer(2)?");
-            case 2 -> System.out.println("Is Player Two Human(1) or Computer(2)?");
+            case 1 -> System.out.println("\033[0;35mIs Player One Human(1) or Computer(2)?\033[0m");
+            case 2 -> System.out.println("\033[0;35mIs Player Two Human(1) or Computer(2)?\033[0m");
             default -> {
             }
         }
     }
 
+    public void askUserForCorrectPlayers() {
+        System.out.println("\033[0;31mPlease enter valid numbers (1) or (2) for machine or player.\n\033[0m");
+    }
+
     public void printHorizontalLine() {
-        System.out.println("\n\t---------------");
+        System.out.println("\n\t------------------");
     }
 
     /**
      * Asks user to enter a number of rows
      */
     public void printUserEnterRowNbr() {
-        System.out.println("\u001B[33mEnter row number (Smaller than three):\u001B[0m ");
+        System.out.println("\u001B[33mEnter row number (0 - 1 - 2):\u001B[0m ");
     }
 
     /**
      * Asks user to enter a number of columns
      */
     public void printUserEnterColNbr() {
-        System.out.println("\u001B[33mEnter column number (Smaller than three):\u001B[0m ");
+        System.out.println("\033[0;32mEnter column number (0 - 1 - 2):\u001B[0m ");
     }
 
     /**
@@ -128,7 +137,7 @@ public class View {
      * 
      * @param player current player that played in TicTacToe.
      */
-    public void printPlayersWin(Player player) {
+    public void printPlayersWin(HumanPlayer player) {
         try {
             System.out.println("\tTHE WINNER IS \u001B[35m" + player.getWinner() + "\n");
         } catch (Exception e) {

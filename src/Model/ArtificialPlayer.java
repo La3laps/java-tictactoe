@@ -1,6 +1,8 @@
+package Model;
+
 import java.util.Random;
 
-public class ArtificialPlayer extends Cell {
+public class ArtificialPlayer extends Player {
 
     private String representation = "   ";
 
@@ -39,9 +41,9 @@ public class ArtificialPlayer extends Cell {
      */
     public String getWinner(String representation) {
         String winner = "";
-        if (representation.equals(" X ")) {
+        if (representation.equals(" ❌ ")) {
             winner = "Computer One";
-        } else if (representation.equals(" O ")) {
+        } else if (representation.equals(" ⭕ ")) {
             winner = "Computer Two";
         }
         return winner;
