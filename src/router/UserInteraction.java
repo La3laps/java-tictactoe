@@ -1,9 +1,10 @@
-package Router;
+package router;
 
-import Model.Player;
-import View.View;
+import controller.TicTacToe;
 import java.util.ArrayList;
 import java.util.Scanner;
+import model.Cell;
+import view.View;
 
 public class UserInteraction {
     private final Scanner scan = new Scanner(System.in);
@@ -14,9 +15,12 @@ public class UserInteraction {
      * @return temp which is a temporary array to store two integers representing
      *         rows and columns.
      */
-    public int[] chosePlayers() {
+    public int[] gameMenu() {
         View display = new View();
+        TicTacToe ticTacToe = new TicTacToe();
+
         display.clearScreen();
+
         int[] temp = { 0, 0 };
         while (true) {
             try {
@@ -54,7 +58,7 @@ public class UserInteraction {
      * @param size  the size of the array.
      * @return an array of two integers (mandatory) that are smaller than 2.
      */
-    public int[] getMoveFromPlayer(ArrayList<Player> cells, int size) {
+    public int[] getMoveFromPlayer(ArrayList<Cell> cells, int size) {
         View display = new View();
         int[] inputArray = { 0, 0 };
         while (true) {

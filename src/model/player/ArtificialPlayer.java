@@ -1,4 +1,4 @@
-package Model;
+package model.player;
 
 import java.util.Random;
 

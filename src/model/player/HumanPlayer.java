@@ -1,4 +1,5 @@
-package Model;
+package model.player;
+
 public class HumanPlayer extends Player {
     private String representation = "   ";
 

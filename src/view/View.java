@@ -1,9 +1,9 @@
-package View;
+package view;
 
-import Model.ArtificialPlayer;
-import Model.HumanPlayer;
-import Model.Player;
 import java.util.ArrayList;
+import model.Cell;
+import model.player.ArtificialPlayer;
+import model.player.HumanPlayer;
 
 public class View {
 
@@ -21,10 +21,10 @@ public class View {
      * @param cells ArrayList to be printed.
      * @param size  size of the array.
      */
-    public void displayBoard(ArrayList<Player> cells, int size) {
+    public void displayBoard(ArrayList<Cell> cells, int size) {
         printHorizontalLine();
         int i = 1;
-        for (Player cell : cells) {
+        for (Cell cell : cells) {
             if (i % size == 1) {
                 System.out.print("\t");
             }
