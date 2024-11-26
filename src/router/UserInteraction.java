@@ -1,6 +1,5 @@
 package router;
 
-import controller.TicTacToe;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.Cell;
@@ -17,7 +16,6 @@ public class UserInteraction {
      */
     public int[] gameMenu() {
         View display = new View();
-        TicTacToe ticTacToe = new TicTacToe();
 
         display.clearScreen();
 
