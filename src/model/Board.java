@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public class Board {
+    private final int size = 3;
     private ArrayList<Cell> board;
 
     public Board() {
@@ -15,6 +16,10 @@ public class Board {
         }
     }
 
+    public int getSize() {
+        return this.size;
+    }
+
     public ArrayList<Cell> getBoard() {
         return this.board;
     }
@@ -23,4 +28,27 @@ public class Board {
         this.board = board;
     }
 
+    public String getRep() {
+        /**
+         * Print the board of TicTacToe in the console.
+         * 
+         * @param cells ArrayList to be printed.
+         * @param size  size of the array.
+         */
+        String rep = "";
+        int i = 1;
+        rep += "\n\t------------------\n";
+        for (Cell cell : board) {
+            if (i % size == 1) {
+                rep += "\t";
+            }
+            rep += "|" + cell.getRep() + "|";
+            if (i % size == 0) {
+                rep += "\t\n\t------------------\n";
+            }
+            i++;
+        }
+        rep += "\n";
+        return rep;
+    }
 }

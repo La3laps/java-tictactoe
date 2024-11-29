@@ -1,7 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import model.Cell;
 import model.player.ArtificialPlayer;
 import model.player.HumanPlayer;
 
@@ -15,27 +13,8 @@ public class View {
         System.out.flush();
     }
 
-    /**
-     * Print the board of TicTacToe in the console.
-     * 
-     * @param cells ArrayList to be printed.
-     * @param size  size of the array.
-     */
-    public void displayBoard(ArrayList<Cell> cells, int size) {
-        printHorizontalLine();
-        int i = 1;
-        for (Cell cell : cells) {
-            if (i % size == 1) {
-                System.out.print("\t");
-            }
-            System.out.print("|" + cell.getRepresentation() + "|");
-            if (i % size == 0) {
-                System.out.print("\t");
-                printHorizontalLine();
-            }
-            i++;
-        }
-        System.out.println();
+    public void printBoardRep(String rep) {
+        System.out.println(rep);
     }
 
     /**

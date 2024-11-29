@@ -41,13 +41,13 @@ public class TicTacToe {
 
         int index = inputArray[0] * size + inputArray[1];
 
-        while (cells.get(index).getRepresentation().equals(" ❌ ")
-                || cells.get(index).getRepresentation().equals(" ⭕ ")) {
+        while (cells.get(index).getRep().equals(" ❌ ")
+                || cells.get(index).getRep().equals(" ⭕ ")) {
             display.clearScreen();
             display.printOccupiedCell();
-            display.displayBoard(cells, size);
+            display.printBoardRep(board.getRep());
 
-            inputArray = interact.getMoveFromPlayer(cells, size);
+            inputArray = interact.getMoveFromPlayer(board);
             index = inputArray[0] * size + inputArray[1];
         }
 
@@ -85,8 +85,8 @@ public class TicTacToe {
 
         int index = inputArray[0] * size + inputArray[1];
 
-        while (cells.get(index).getRepresentation().equals(" ❌ ")
-                || cells.get(index).getRepresentation().equals(" ⭕ ")) {
+        while (cells.get(index).getRep().equals(" ❌ ")
+                || cells.get(index).getRep().equals(" ⭕ ")) {
             inputArray = artificialPlayer.getMachineMove();
             index = inputArray[0] * size + inputArray[1];
         }
@@ -128,20 +128,20 @@ public class TicTacToe {
         this.cells = board.getBoard();
 
         display.clearScreen();
-        display.displayBoard(cells, size);
+        display.printBoardRep(board.getRep());
 
         int turn = 0;
 
         while (!isOver(turn)) {
-            int[] move = interact.getMoveFromPlayer(cells, size);
+            int[] move = interact.getMoveFromPlayer(board);
             turn = setPlayerMove(move, turn);
-            display.displayBoard(cells, size);
+            display.printBoardRep(board.getRep());
         }
 
         display.printGameOver();
 
         if (turn != 9) {
-            display.displayBoard(cells, size);
+            display.printBoardRep(board.getRep());
             display.printPlayersWin(humanPlayer);
         } else {
             display.printOutOfMoves();
@@ -157,7 +157,7 @@ public class TicTacToe {
         this.cells = board.getBoard();
 
         display.clearScreen();
-        display.displayBoard(cells, size);
+        display.printBoardRep(board.getRep());
 
         int turn = 0;
 
@@ -166,14 +166,14 @@ public class TicTacToe {
             turn = setMachineMove(move, turn);
 
             display.clearScreen();
-            display.displayBoard(cells, size);
+            display.printBoardRep(board.getRep());
             waitASec();
         }
 
         display.printGameOver();
-        
+
         if (turn != 9) {
-            display.displayBoard(cells, size);
+            display.printBoardRep(board.getRep());
             display.printComputersWin(artificialPlayer);
         } else {
             display.printOutOfMoves();
@@ -187,7 +187,7 @@ public class TicTacToe {
 
         board.initializeBoard(size);
         display.clearScreen();
-        display.displayBoard(cells, size);
+        display.printBoardRep(board.getRep());
 
         int turn = 0;
 
@@ -196,15 +196,15 @@ public class TicTacToe {
                 // machine turn
                 int[] machineMove = artificialPlayer.getMachineMove();
                 turn = setMachineMove(machineMove, turn);
-                
+
                 display.clearScreen();
                 waitASec();
-                display.displayBoard(cells, size);
+                display.printBoardRep(board.getRep());
 
                 if (isOver(turn)) {
                     display.printGameOver();
                     if (turn != 9) {
-                        display.displayBoard(cells, size);
+                        display.printBoardRep(board.getRep());
                         display.printComputerWin();
                     } else {
                         display.printOutOfMoves();
@@ -213,14 +213,14 @@ public class TicTacToe {
                 }
 
                 // player turn
-                int[] move = interact.getMoveFromPlayer(cells, size);
+                int[] move = interact.getMoveFromPlayer(board);
                 turn = setPlayerMove(move, turn);
-                display.displayBoard(cells, size);
+                display.printBoardRep(board.getRep());
 
                 if (isOver(turn)) {
                     display.printGameOver();
                     if (turn != 9) {
-                        display.displayBoard(cells, size);
+                        display.printBoardRep(board.getRep());
                         display.printPlayerWin();
                     } else {
                         display.printOutOfMoves();
@@ -272,7 +272,7 @@ public class TicTacToe {
     }
 
     private String getCell(int i) {
-        return cells.get(i).getRepresentation();
+        return cells.get(i).getRep();
     }
 
     private void waitASec() {

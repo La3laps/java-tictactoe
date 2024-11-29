@@ -1,8 +1,7 @@
 package router;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import model.Cell;
+import model.Board;
 import view.View;
 
 public class UserInteraction {
@@ -56,7 +55,7 @@ public class UserInteraction {
      * @param size  the size of the array.
      * @return an array of two integers (mandatory) that are smaller than 2.
      */
-    public int[] getMoveFromPlayer(ArrayList<Cell> cells, int size) {
+    public int[] getMoveFromPlayer(Board board) {
         View display = new View();
         int[] inputArray = { 0, 0 };
         while (true) {
@@ -64,15 +63,16 @@ public class UserInteraction {
                 display.printUserEnterRowNbr();
                 int inputOne = askUserForInteger();
                 display.clearScreen();
-                display.displayBoard(cells, size);
-                if (inputOne < size) {
+                display.printBoardRep(board.getRep());
+
+                if (inputOne < board.getSize()) {
                     inputArray[0] = inputOne;
                     break;
                 }
             } catch (NumberFormatException e) {
                 display.clearScreen();
                 display.printErrorInsertInteger(e);
-                display.displayBoard(cells, size);
+                display.printBoardRep(board.getRep());
             }
         }
         while (true) {
@@ -80,15 +80,15 @@ public class UserInteraction {
                 display.printUserEnterColNbr();
                 int inputTwo = askUserForInteger();
                 display.clearScreen();
-                display.displayBoard(cells, size);
-                if (inputTwo < size) {
+                display.printBoardRep(board.getRep());
+                if (inputTwo < board.getSize()) {
                     inputArray[1] = inputTwo;
                     break;
                 }
             } catch (NumberFormatException e) {
                 display.clearScreen();
                 display.printErrorInsertInteger(e);
-                display.displayBoard(cells, size);
+                display.printBoardRep(board.getRep());
             }
         }
         return inputArray;
