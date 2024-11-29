@@ -7,19 +7,14 @@ public class Cell {
         return representation;
     }
 
-    public void setRepresentation(String representation) {
-        this.representation = representation;
-    }
-
     public boolean isOccupied() {
         return !this.representation.equals("    ");
     }
 
     public boolean occupy(String rep) {
-        if(isOccupied()){
+        if (isOccupied()) {
             return false;
-        }
-        else {
+        } else {
             this.representation = rep;
             return true;
         }

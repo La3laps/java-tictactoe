@@ -1,9 +1,9 @@
 import controller.TicTacToe;
-import controller.player.PlayerInteraction;
+import controller.player.MenuLogic;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        PlayerInteraction userChoice = new PlayerInteraction();
+        MenuLogic userChoice = new MenuLogic();
         TicTacToe ticTacToe = new TicTacToe();
 
         //Menu choice

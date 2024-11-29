@@ -20,10 +20,6 @@ public class Board {
         return this.size;
     }
 
-    public ArrayList<Cell> getBoard() {
-        return this.board;
-    }
-
     public String getRep() {
         /**
          * Returns a representation of the board to be printed.

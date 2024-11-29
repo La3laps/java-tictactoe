@@ -43,13 +43,12 @@ public class Player {
      */
     private int[] getHumanPlayerMove(Board board) {
         View display = new View();
-        PlayerInteraction interact = new PlayerInteraction();
 
         int[] inputArray = { 0, 0 };
         while (true) {
             try {
                 display.printUserEnterRowNbr();
-                int inputOne = interact.askUserForInteger();
+                int inputOne = display.askUserForInteger();
                 display.clearScreen();
                 display.printBoardRep(board.getRep());
 
@@ -66,7 +65,7 @@ public class Player {
         while (true) {
             try {
                 display.printUserEnterColNbr();
-                int inputTwo = interact.askUserForInteger();
+                int inputTwo = display.askUserForInteger();
                 display.clearScreen();
                 display.printBoardRep(board.getRep());
                 if (inputTwo < board.getSize()) {
@@ -101,7 +100,7 @@ public class Player {
 
     @Override
     public String toString() {
-        String toStringString = "THE WINNER IS : " + this.name + " " + this.playerNumber + "\n";
+        String toStringString = "THE WINNER IS : " + this.name + " " + this.playerNumber;
         return toStringString;
     }
 }

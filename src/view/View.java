@@ -1,6 +1,9 @@
 package view;
 
+import java.util.Scanner;
+
 public class View {
+    private final Scanner scan = new Scanner(System.in);
 
     /**
      * Clears the screen on Linux machine
@@ -17,6 +20,14 @@ public class View {
     public void print(String toPrint) {
         System.out.println(toPrint);
     }
+
+        /**
+     * @return a single integer from user input.
+     */
+    public int askUserForInteger() {
+        return Integer.parseInt(scan.nextLine());
+    }
+
 
     /**
      * Asks user for who player one and player two will be (human/computer).

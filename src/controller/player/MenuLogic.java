@@ -1,10 +1,8 @@
 package controller.player;
 
-import java.util.Scanner;
 import view.View;
 
-public class PlayerInteraction {
-    private final Scanner scan = new Scanner(System.in);
+public class MenuLogic {
 
     /**
      * Takes user input to get two integers and catch and exception if they are not.
@@ -21,10 +19,10 @@ public class PlayerInteraction {
         while (true) {
             try {
                 display.printAskForHumanOrComputer(1);
-                temp[0] = askUserForInteger();
+                temp[0] = display.askUserForInteger();
 
                 display.printAskForHumanOrComputer(2);
-                temp[1] = askUserForInteger();
+                temp[1] = display.askUserForInteger();
                 if (checkInput(temp[0], temp[1])) {
                     break;
                 }
@@ -36,13 +34,6 @@ public class PlayerInteraction {
             }
         }
         return temp;
-    }
-
-    /**
-     * @return a single integer from user input.
-     */
-    public int askUserForInteger() {
-        return Integer.parseInt(scan.nextLine());
     }
 
     private boolean checkInput(int input, int input_two) {

@@ -9,7 +9,47 @@ public class TicTacToe {
 
     private final Board board = new Board();
 
-    private void setPlayerMove(int[] inputArray, int actual_turn, Player player) {
+    /**
+     * Main logic of the game.
+     * Three modes, combinations of players or computers.
+     */
+
+    public void play(int choice_one, int choice_two) {
+        View display = new View();
+
+        Player player_one = choosePlayerOne(choice_one);
+        Player player_two = choosePlayerTwo(choice_two);
+
+        board.initializeBoard(board.getSize());
+
+        display.clearScreen();
+        display.printBoardRep(board.getRep());
+
+        int turn = 0;
+
+        while (!isOver()) {
+            // player_one
+            int[] move_one = player_one.getMoveFromPlayer(board);
+            playerPlaysMove(move_one, turn, player_one);
+            turn++;
+
+            display.printBoardRep(board.getRep());
+            waitASec();
+
+            // player_two
+            if (!isOver()) {
+                int[] move_two = player_two.getMoveFromPlayer(board);
+                playerPlaysMove(move_two, turn, player_two);
+                turn++;
+
+                display.printBoardRep(board.getRep());
+                waitASec();
+            }
+        }
+        getGameOver(turn, player_one, player_two);
+    }
+
+    private void playerPlaysMove(int[] inputArray, int actual_turn, Player player) {
 
         String current_turn_rep = getCurrentRepDependingOnTurn(actual_turn);
 
@@ -38,46 +78,6 @@ public class TicTacToe {
             }
         }
         return current_turn_rep;
-    }
-
-    /**
-     * Main logic of the game.
-     * Three modes, combinations of players or computers.
-     */
-
-    public void play(int choice_one, int choice_two) {
-        Player player_one = choosePlayerOne(choice_one);
-        Player player_two = choosePlayerTwo(choice_two);
-
-        View display = new View();
-
-        board.initializeBoard(board.getSize());
-
-        display.clearScreen();
-        display.printBoardRep(board.getRep());
-
-        int turn = 0;
-
-        while (!isOver()) {
-            // player_one
-            int[] move_one = player_one.getMoveFromPlayer(board);
-            setPlayerMove(move_one, turn, player_one);
-            turn++;
-
-            display.printBoardRep(board.getRep());
-            waitASec();
-
-            // player_two
-            if (!isOver()) {
-                int[] move_two = player_two.getMoveFromPlayer(board);
-                setPlayerMove(move_two, turn, player_two);
-                turn++;
-
-                display.printBoardRep(board.getRep());
-                waitASec();
-            }
-        }
-        getGameOver(turn, player_one, player_two);
     }
 
     private Player choosePlayerOne(int choice_one) {
@@ -109,9 +109,9 @@ public class TicTacToe {
         if (board.isFull()) {
             display.printOutOfMoves();
         } else if (turn % 2 == 1) {
-            display.print(player_one.toString());
+            display.print(player_one.toString() + getCurrentRepDependingOnTurn(turn + 1) + "\n");
         } else if (turn % 2 == 0) {
-            display.print(player_two.toString());
+            display.print(player_two.toString() + getCurrentRepDependingOnTurn(turn + 1) + "\n");
         }
     }
 
@@ -128,23 +128,27 @@ public class TicTacToe {
             if (!checkCell(i * board.getSize()).equals("    ")
                     && checkCell(i * board.getSize()).equals(checkCell(i * 3 + 1))
                     && checkCell(i * board.getSize()).equals(checkCell(i * board.getSize() + 2))) {
-                return true;
+                over = true;
+                return over;
             }
 
             // Check columns
             if (!checkCell(i).equals("    ") && checkCell(i).equals(checkCell(i + 3))
                     && checkCell(i).equals(checkCell(i + 6))) {
-                return true;
+                over = true;
+                return over;
             }
         }
 
         // Check diag
         if (!checkCell(0).equals("    ") && checkCell(0).equals(checkCell(4)) && checkCell(0).equals(checkCell(8))) {
-            return true;
+            over = true;
+            return over;
         }
 
         if (!checkCell(2).equals("    ") && checkCell(2).equals(checkCell(4)) && checkCell(2).equals(checkCell(6))) {
-            return true;
+            over = true;
+            return over;
         }
 
         if (board.isFull()) {
