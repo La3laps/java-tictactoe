@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Board {
     private final int size = 3;
-    private ArrayList<Cell> board;
+    private final ArrayList<Cell> board;
 
     public Board() {
         this.board = new ArrayList<>();
@@ -26,10 +26,7 @@ public class Board {
 
     public String getRep() {
         /**
-         * Print the board of TicTacToe in the console.
-         * 
-         * @param cells ArrayList to be printed.
-         * @param size  size of the array.
+         * Returns a representation of the board to be printed.
          */
         String rep = "";
         int i = 1;
@@ -58,5 +55,15 @@ public class Board {
 
     public void occupyAt(int cellNbr, String rep) {
         board.get(cellNbr).occupy(rep);
+    }
+
+    public boolean isFull() {
+        boolean checkFull = true;
+        for (Cell elem : board) {
+            if (!elem.isOccupied()) {
+                return false;
+            }
+        }
+        return checkFull;
     }
 }

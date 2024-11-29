@@ -1,82 +1,35 @@
 package controller;
 
-import java.util.ArrayList;
+import controller.player.Player;
 import java.util.concurrent.TimeUnit;
 import model.Board;
-import model.Cell;
-import model.player.ArtificialPlayer;
-import model.player.HumanPlayer;
-import router.UserInteraction;
 import view.View;
 
 public class TicTacToe {
-    private final int size = 3;
+
     private final Board board = new Board();
-    private HumanPlayer humanPlayer;
-    private ArtificialPlayer artificialPlayer;
-    private ArrayList<Cell> cells = board.getBoard();
 
-    /**
-     * Sets a player move if possible but also depending on which turn we are.
-     * 
-     * @param inputArray takes in the actuall cell in the TicTacToe.
-     * @param turn       takes in which turn we are
-     * @return increments the turn once the function has been used.
-     */
-    private int setPlayerMove(int[] inputArray, int actual_turn) {
-        View display = new View();
-        UserInteraction interact = new UserInteraction();
+    private void setPlayerMove(int[] inputArray, int actual_turn, Player player) {
 
-        switch (actual_turn % 2) {
-            case 0 -> {
-                this.humanPlayer = new HumanPlayer();
-                humanPlayer.setRepresentation(" ❌ ");
-            }
-            case 1 -> {
-                this.humanPlayer = new HumanPlayer();
-                humanPlayer.setRepresentation(" ⭕ ");
-            }
-            default -> throw new AssertionError();
-        }
+        String current_turn_rep = getCurrentRepDependingOnTurn(actual_turn);
 
-        int index = inputArray[0] * size + inputArray[1];
+        int index = inputArray[0] * board.getSize() + inputArray[1];
 
         while (board.occupiedAt(index)) {
-            display.clearScreen();
-            display.printBoardRep(board.getRep());
-            display.printOccupiedCell();
-
-            inputArray = interact.getMoveFromPlayer(board);
-            index = inputArray[0] * size + inputArray[1];
+            inputArray = player.getMoveFromPlayer(board);
+            index = inputArray[0] * board.getSize() + inputArray[1];
         }
 
-        Cell cellule = new Cell();
-        cellule.setRepresentation(humanPlayer.getRepresentation());
-
-        cells.set(index, cellule);
-
-        actual_turn++;
-        return actual_turn++;
+        board.occupyAt(index, current_turn_rep);
     }
 
-    /**
-     * Sets a machine move if possible but also depending on which turn we are.
-     * 
-     * @param inputArray takes in the actuall cell in the TicTacToe.
-     * @param turn       takes in which turn we are
-     * @return increments the turn once the function has been used.
-     */
-    private int setMachineMove(int[] inputArray, int actual_turn) {
+    private String getCurrentRepDependingOnTurn(int turn) {
         String current_turn_rep = "    ";
-        switch (actual_turn % 2) {
+        switch (turn % 2) {
             case 0 -> {
-                this.artificialPlayer = new ArtificialPlayer();
-                artificialPlayer.setRepresentation(" ❌ ");
                 current_turn_rep = " ❌ ";
             }
             case 1 -> {
-                this.artificialPlayer = new ArtificialPlayer();
-                artificialPlayer.setRepresentation(" ⭕ ");
                 current_turn_rep = " ⭕ ";
             }
             default -> {
@@ -84,196 +37,125 @@ public class TicTacToe {
                 throw new AssertionError();
             }
         }
-
-        int index = inputArray[0] * size + inputArray[1];
-
-        while (board.occupiedAt(index)) {
-            inputArray = artificialPlayer.getMachineMove();
-            index = inputArray[0] * size + inputArray[1];
-        }
-        Cell cellule = new Cell();
-        cellule.setRepresentation(artificialPlayer.getRepresentation());
-
-        cells.set(index, cellule);
-
-        actual_turn++;
-        return actual_turn;
+        return current_turn_rep;
     }
 
     /**
      * Main logic of the game.
-     * 1. Takes user input to know how many computers/players are playing and what
-     * they play.
-     * 2. Increments a turn variable depending on when player/computer plays.
-     * 3. Stops the game when a player/computer has won or there are no more
-     * possible moves.
+     * Three modes, combinations of players or computers.
      */
-    public void play(int playerOne, int playerTwo) {
 
-        if (playerOne == 1 && playerTwo == 1) {
-            playerVSPlayer();
-        } else if (playerOne == 2 && playerTwo == 2) {
-            computerVSComputer();
-        } else {
-            playerVSComputer();
-        }
-
-    }
-
-    private void playerVSPlayer() {
+    public void play(int choice_one, int choice_two) {
+        Player player_one = choosePlayerOne(choice_one);
+        Player player_two = choosePlayerTwo(choice_two);
 
         View display = new View();
-        UserInteraction interact = new UserInteraction();
 
-        board.initializeBoard(size);
-        this.cells = board.getBoard();
+        board.initializeBoard(board.getSize());
 
         display.clearScreen();
         display.printBoardRep(board.getRep());
 
         int turn = 0;
 
-        while (!isOver(turn)) {
-            int[] move = interact.getMoveFromPlayer(board);
-            turn = setPlayerMove(move, turn);
-            display.printBoardRep(board.getRep());
-        }
+        while (!isOver()) {
+            // player_one
+            int[] move_one = player_one.getMoveFromPlayer(board);
+            setPlayerMove(move_one, turn, player_one);
+            turn++;
 
-        display.printGameOver();
-
-        if (turn != 9) {
-            display.printBoardRep(board.getRep());
-            display.printPlayersWin(humanPlayer);
-        } else {
-            display.printOutOfMoves();
-        }
-    }
-
-    private void computerVSComputer() {
-
-        View display = new View();
-        this.artificialPlayer = new ArtificialPlayer();
-
-        board.initializeBoard(size);
-        this.cells = board.getBoard();
-
-        display.clearScreen();
-        display.printBoardRep(board.getRep());
-
-        int turn = 0;
-
-        while (!isOver(turn)) {
-            int[] move = artificialPlayer.getMachineMove();
-            turn = setMachineMove(move, turn);
-
-            display.clearScreen();
             display.printBoardRep(board.getRep());
             waitASec();
-        }
 
-        display.printGameOver();
+            // player_two
+            if (!isOver()) {
+                int[] move_two = player_two.getMoveFromPlayer(board);
+                setPlayerMove(move_two, turn, player_two);
+                turn++;
 
-        if (turn != 9) {
-            display.printBoardRep(board.getRep());
-            display.printComputersWin(artificialPlayer);
-        } else {
-            display.printOutOfMoves();
+                display.printBoardRep(board.getRep());
+                waitASec();
+            }
         }
+        getGameOver(turn, player_one, player_two);
     }
 
-    private void playerVSComputer() {
-        View display = new View();
-        UserInteraction interact = new UserInteraction();
-        this.artificialPlayer = new ArtificialPlayer();
+    private Player choosePlayerOne(int choice_one) {
+        Player player_one = new Player("toBeDecided", "n° 0");
+        if (choice_one == 1) {
+            player_one = new Player("human", "n° 1");
+        } else if (choice_one == 2) {
+            player_one = new Player("computer", "n° 1");
+        }
+        return player_one;
+    }
 
-        board.initializeBoard(size);
-        display.clearScreen();
+    private Player choosePlayerTwo(int choice_two) {
+        Player player_two = new Player("toBeDecided", "n° 0");
+        if (choice_two == 1) {
+            player_two = new Player("human", "n° 2");
+        } else if (choice_two == 2) {
+            player_two = new Player("computer", "n° 2");
+        }
+        return player_two;
+    }
+
+    private void getGameOver(int turn, Player player_one, Player player_two) {
+        View display = new View();
+
+        display.printGameOver();
         display.printBoardRep(board.getRep());
 
-        int turn = 0;
-
-        while (!isOver(turn)) {
-            try {
-                // machine turn
-                int[] machineMove = artificialPlayer.getMachineMove();
-                turn = setMachineMove(machineMove, turn);
-
-                display.clearScreen();
-                waitASec();
-                display.printBoardRep(board.getRep());
-
-                if (isOver(turn)) {
-                    display.printGameOver();
-                    if (turn != 9) {
-                        display.printBoardRep(board.getRep());
-                        display.printComputerWin();
-                    } else {
-                        display.printOutOfMoves();
-                    }
-                    return;
-                }
-
-                // player turn
-                int[] move = interact.getMoveFromPlayer(board);
-                turn = setPlayerMove(move, turn);
-                display.printBoardRep(board.getRep());
-
-                if (isOver(turn)) {
-                    display.printGameOver();
-                    if (turn != 9) {
-                        display.printBoardRep(board.getRep());
-                        display.printPlayerWin();
-                    } else {
-                        display.printOutOfMoves();
-                    }
-                    return;
-                }
-            } catch (Exception e) {
-
-            }
+        if (board.isFull()) {
+            display.printOutOfMoves();
+        } else if (turn % 2 == 1) {
+            display.print(player_one.toString());
+        } else if (turn % 2 == 0) {
+            display.print(player_two.toString());
         }
     }
 
     /**
      * Checks if a player/computer has won the game.
      * 
-     * @param turn takes in parameter which turn we are.
      * @return true if conditions are met or false if the game should not be over.
      */
-    private boolean isOver(int turn) {
+    private boolean isOver() {
         boolean over = false;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < board.getSize(); i++) {
             // Check rows
-            if (!getCell(i * size).equals("    ") && getCell(i * size).equals(getCell(i * 3 + 1))
-                    && getCell(i * size).equals(getCell(i * size + 2))) {
+            if (!checkCell(i * board.getSize()).equals("    ")
+                    && checkCell(i * board.getSize()).equals(checkCell(i * 3 + 1))
+                    && checkCell(i * board.getSize()).equals(checkCell(i * board.getSize() + 2))) {
                 return true;
             }
 
             // Check columns
-            if (!getCell(i).equals("    ") && getCell(i).equals(getCell(i + 3)) && getCell(i).equals(getCell(i + 6))) {
+            if (!checkCell(i).equals("    ") && checkCell(i).equals(checkCell(i + 3))
+                    && checkCell(i).equals(checkCell(i + 6))) {
                 return true;
             }
         }
 
         // Check diag
-        if (!getCell(0).equals("    ") && getCell(0).equals(getCell(4)) && getCell(0).equals(getCell(8))) {
+        if (!checkCell(0).equals("    ") && checkCell(0).equals(checkCell(4)) && checkCell(0).equals(checkCell(8))) {
             return true;
         }
 
-        if (!getCell(2).equals("    ") && getCell(2).equals(getCell(4)) && getCell(2).equals(getCell(6))) {
+        if (!checkCell(2).equals("    ") && checkCell(2).equals(checkCell(4)) && checkCell(2).equals(checkCell(6))) {
             return true;
         }
 
-        if (turn > 8) {
+        if (board.isFull()) {
             over = true;
         }
 
         return over;
     }
 
-    private String getCell(int i) {
-        return cells.get(i).getRep();
+    private String checkCell(int i) {
+        return board.getRepAtCell(i);
     }
 
     private void waitASec() {

@@ -1,8 +1,5 @@
 package view;
 
-import model.player.ArtificialPlayer;
-import model.player.HumanPlayer;
-
 public class View {
 
     /**
@@ -14,8 +11,11 @@ public class View {
     }
 
     public void printBoardRep(String rep) {
-        clearScreen();
         System.out.println(rep);
+    }
+
+    public void print(String toPrint) {
+        System.out.println(toPrint);
     }
 
     /**
@@ -34,10 +34,6 @@ public class View {
 
     public void askUserForCorrectPlayers() {
         System.out.println("\033[0;31mPlease enter valid numbers (1) or (2) for machine or player.\n\033[0m");
-    }
-
-    public void printHorizontalLine() {
-        System.out.println("\n\t------------------");
     }
 
     /**
@@ -98,50 +94,9 @@ public class View {
     }
 
     /**
-     * Prints which computer has won.
-     * 
-     * @param machinePlayer current artificial intelligence that played in
-     *                      TicTacToe.
-     */
-    public void printComputersWin(ArtificialPlayer machinePlayer) {
-        try {
-            System.out.println(
-                    "\tTHE WINNER IS \u001B[35m" + machinePlayer.getWinner(machinePlayer.getRepresentation()) + "\n");
-
-        } catch (Exception e) {
-        }
-    }
-
-    /**
-     * Prints which player has won.
-     * 
-     * @param player current player that played in TicTacToe.
-     */
-    public void printPlayersWin(HumanPlayer player) {
-        try {
-            System.out.println("\tTHE WINNER IS \u001B[35m" + player.getWinner() + "\n");
-        } catch (Exception e) {
-        }
-    }
-
-    /**
      * Prints that there are no more possible moves.
      */
     public void printOutOfMoves() {
         System.out.println("\tTHERE ARE NO MOVES LEFT\n\t     NO WINNER...");
-    }
-
-    /**
-     * Prints player as winner.
-     */
-    public void printPlayerWin() {
-        System.out.println("\tTHE WINNER IS \u001B[35m THE PLAYER\n");
-    }
-
-    /**
-     * Prints computer as winner
-     */
-    public void printComputerWin() {
-        System.out.println("\tTHE WINNER IS \u001B[35m THE COMPUTER\n");
     }
 }
