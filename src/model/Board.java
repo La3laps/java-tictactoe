@@ -24,10 +24,6 @@ public class Board {
         return this.board;
     }
 
-    public void setBoard(ArrayList<Cell> board) {
-        this.board = board;
-    }
-
     public String getRep() {
         /**
          * Print the board of TicTacToe in the console.
@@ -50,5 +46,17 @@ public class Board {
         }
         rep += "\n";
         return rep;
+    }
+
+    public String getRepAtCell(int cellNbr) {
+        return board.get(cellNbr).getRep();
+    }
+
+    public boolean occupiedAt(int cellNbr) {
+        return board.get(cellNbr).isOccupied();
+    }
+
+    public void occupyAt(int cellNbr, String rep) {
+        board.get(cellNbr).occupy(rep);
     }
 }

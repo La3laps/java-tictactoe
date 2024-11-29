@@ -14,6 +14,7 @@ public class View {
     }
 
     public void printBoardRep(String rep) {
+        clearScreen();
         System.out.println(rep);
     }
 

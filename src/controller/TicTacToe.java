@@ -41,11 +41,10 @@ public class TicTacToe {
 
         int index = inputArray[0] * size + inputArray[1];
 
-        while (cells.get(index).getRep().equals(" ❌ ")
-                || cells.get(index).getRep().equals(" ⭕ ")) {
+        while (board.occupiedAt(index)) {
             display.clearScreen();
-            display.printOccupiedCell();
             display.printBoardRep(board.getRep());
+            display.printOccupiedCell();
 
             inputArray = interact.getMoveFromPlayer(board);
             index = inputArray[0] * size + inputArray[1];
@@ -68,14 +67,17 @@ public class TicTacToe {
      * @return increments the turn once the function has been used.
      */
     private int setMachineMove(int[] inputArray, int actual_turn) {
+        String current_turn_rep = "    ";
         switch (actual_turn % 2) {
             case 0 -> {
                 this.artificialPlayer = new ArtificialPlayer();
                 artificialPlayer.setRepresentation(" ❌ ");
+                current_turn_rep = " ❌ ";
             }
             case 1 -> {
                 this.artificialPlayer = new ArtificialPlayer();
                 artificialPlayer.setRepresentation(" ⭕ ");
+                current_turn_rep = " ⭕ ";
             }
             default -> {
 
@@ -85,8 +87,7 @@ public class TicTacToe {
 
         int index = inputArray[0] * size + inputArray[1];
 
-        while (cells.get(index).getRep().equals(" ❌ ")
-                || cells.get(index).getRep().equals(" ⭕ ")) {
+        while (board.occupiedAt(index)) {
             inputArray = artificialPlayer.getMachineMove();
             index = inputArray[0] * size + inputArray[1];
         }
